@@ -275,7 +275,8 @@ class JsonRpc(object):
 
     async def _ws_send_str(self, client, string):
         if client.ws._writer.transport.is_closing():
-            self.clients.remove(client)
+            if client in self.clients:
+                self.clients.remove(client)
             await client.ws.close()
 
         await client.ws.send_str(string)
